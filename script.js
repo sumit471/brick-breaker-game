@@ -6,6 +6,32 @@ const ctx = cnv.getContext("2d");
 var BG_IMG = new Image();
 BG_IMG.src = "img/bg.png";
 
+var SCORE_IMG = new Image();
+SCORE_IMG.src = "img/score.png";
+
+var LIFE_IMG = new Image();
+LIFE_IMG.src = "img/life.png";
+
+var LEVEL_IMG = new Image();
+LEVEL_IMG.src = "img/level.png";
+
+
+
+//Objects for sounds
+var WALL_HIT = new Audio();
+WALL_HIT.src = "sounds/wall.mp3";
+
+var PADDLE_HIT = new Audio();
+PADDLE_HIT.src = "sounds/paddle_hit.mp3";
+
+var WIN = new Audio();
+WIN.src = "sounds/win.mp3";
+
+var LOSE = new Audio();
+LOSE.src = "sounds/life_lost.mp3";
+
+var BRICK_HIT = new Audio();
+BRICK_HIT.src = "sounds/brick_hit.mp3";
 
 
 
@@ -184,6 +210,131 @@ function ballPaddleCollision()
           ball.dy = -ball.speed * Math.cos(angle);
     }
 }
+
+// Brick object
+let brick = {
+    row:2,
+    column:10,
+    width:90,
+    height:40,
+    offSetLeft : 25,
+    offSetTop : 20,
+    marginTop : 60,
+    fillColor : "#2e3548",
+    strokeColor : "#FFF"
+ }         
+
+// function will create a 2d matrix of bricks with their x and y cordinate
+let bricks = [];
+function createBricks()
+{
+for(let r=0; r<brick.row; r++)
+{
+bricks[r]=[];
+for(let c=0; c<brick.column; c++)
+{
+   bricks[r][c]={
+       x: c*(brick.offSetLeft+brick.width) + brick.offSetLeft,
+       y: r*(brick.offSetTop+brick.height) + brick.marginTop + brick.offSetTop,
+       status: true // true means bricks are not broken yet
+   }
+}
+}
+}
+
+createBricks();
+
+
+//function for drawing the bricks on canvas 
+function drawBricks()
+{
+for(let r=0; r<brick.row; r++)
+{
+for(let c=0; c<brick.column; c++)
+{            
+   if(bricks[r][c].status)
+   {
+       ctx.fillColor = brick.fillColor;
+       ctx.fillRect(bricks[r][c].x, bricks[r][c].y, brick.width, brick.height);
+
+       ctx.strokeStyle = brick.strokeColor;
+       ctx.strokeRect(bricks[r][c].x, bricks[r][c].y, brick.width, brick.height);
+   }
+}
+}
+}
+
+// for collision between ball and bricks
+function ballBrickCollision()
+{
+for(let r=0; r<brick.row; r++){
+for(let c=0; c<brick.column; c++){           
+  let b = bricks[r][c];
+  if(b.status)
+  {
+   if(ball.x + ball.rad > b.x && ball.x - ball.rad < b.x + brick.width && ball.y + ball.rad > b.y && ball.y - ball.rad < b.y + brick.height)
+   {
+           BRICK_HIT.play();
+           ball.dy = -ball.dy;
+           bricks[r][c].status = false; // the brick is broken
+           SCORE += SCORE_UNIT;
+   }                
+  }
+}
+}
+}
+
+// General function for show image and text => score, life and level images and their values
+function showGameStats(text, textX, textY, img, imgX, imgY){
+ctx.fillColor = "#FFF";
+ctx.font = "35px Germania One";
+ctx.fillText(text, textX, textY);
+
+ctx.drawImage(img, imgX, imgY, 35, 35);
+}
+
+// function for over the game
+function gameOver()
+{
+if(LIFE <= 0){       
+GAME_OVER=true;
+showYouLose();
+}      
+}
+
+//for level up
+function levelUp()
+{
+let isLevelDone = true;
+for(let r=0; r<brick.row; r++){
+for(let c=0; c<brick.column; c++){
+   isLevelDone = isLevelDone && !bricks[r][c].status;
+}
+}    
+
+if(isLevelDone)
+{
+
+WIN.play();
+LEVEL++;
+
+if(LEVEL > MAX_LEVEL) {
+   GAME_OVER=true;
+   showYouWin();
+   return;
+}
+
+upArrow = false;        
+brick.row++;
+createBricks();
+// ball.speed += 1;
+paddle.dx += 4;        
+resetBall();
+resetPaddle();
+stayBall();
+}
+}
+
 
 
 
