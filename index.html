@@ -1,16 +1,30 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
-    <title>Break the Break</title>
-    <link href="style.css" rel="stylesheet" type="text/css"> 
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Germania+One">
+    <title>Break the Bricks</title>
+    <link rel="stylesheet" href="style.css">    
 </head>
 
 <body>
-    <div> Score : <span class="score"></span> Lives : <span class="lives"></span> </div>
-    <div class="container"></div>
-    <script src="script.js"></script>
+
+<div class="sound">
+    <img src="img/SOUND_ON.png" alt="volume" id="sound">
+</div>
+
+<div id="gameover">
+    <img src="img/youwon.png" alt="" id="youwon">
+    <img src="img/gameover.png" alt="" id="youlose">
+    <div id="restart">Play Again!</div>
+</div>
+
+<canvas id="breakout" width="1190px" height="500px" style="border:2px solid black; margin-left: 70px; margin-top:50px;" > </canvas>
+<script src="script.js"></script>
+<script src="sumit.js"></script>
 
 </body>
 
-</html>
