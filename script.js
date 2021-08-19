@@ -379,3 +379,50 @@ function loop()
 }     
 
 loop();
+
+//Setting the sound of the game
+let soundElement = document.getElementById("sound");
+
+soundElement.addEventListener("click", soundManager);
+
+function soundManager()
+{
+     // CHANGE IMAGE SOUND_ON/OFF
+    let imgSrc = soundElement.getAttribute("src");
+    let SOUND_IMG = imgSrc == "img/SOUND_ON.png" ?  "img/SOUND_OFF.png" :  "img/SOUND_ON.png";
+    soundElement.setAttribute("src", SOUND_IMG);
+
+    // MUTE AND UNMUTE SOUNDS
+    WALL_HIT.muted = WALL_HIT.muted ? false : true;
+    PADDLE_HIT.muted = PADDLE_HIT.muted ? false : true;
+    BRICK_HIT.muted = BRICK_HIT.muted ? false : true;
+    WIN.muted = WIN.muted ? false : true;
+    LIFE_LOST.muted = LIFE_LOST.muted ? false : true;
+}
+
+
+
+// SHOW GAME OVER MESSAGE
+
+/* SELECT ELEMENTS */
+const gameover = document.getElementById("gameover");
+const youwin = document.getElementById("youwin");
+const youlose = document.getElementById("youlose");
+const restart = document.getElementById("restart");
+
+// CLICK ON PLAY AGAIN BUTTON
+restart.addEventListener("click", function(){
+    location.reload(); // reload the page
+})
+
+// SHOW YOU WIN
+function showYouWin(){
+    gameover.style.display = "block";
+    youwon.style.display = "block";
+}
+
+// SHOW YOU WIN
+function showYouLose(){
+    gameover.style.display = "block";
+    youlose.style.display = "block";
+}
