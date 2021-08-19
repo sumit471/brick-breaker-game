@@ -1,7 +1,7 @@
 .container {
     height: 400px;
     width: 80%;
-    margin-left: 5%;
+    margin-left: 9%;
     overflow: hidden;
     border: 1px solid black;
     margin-top: 20px;
@@ -12,6 +12,7 @@
 .score,
 .lives {
     font-size: 3em;
+    
 }
 
 .brick {
